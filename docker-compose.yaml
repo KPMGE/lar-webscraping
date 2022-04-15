@@ -1,0 +1,26 @@
+version: '3.9'
+
+services: 
+  nginx: 
+    image: nginx:1.21.6-alpine
+    container_name: nginx
+    ports:
+      - "3333:80"
+    volumes: 
+     -  ./lar-data:/usr/share/lar-data
+    networks: 
+      - lar-webscraping
+
+  webscraping:
+    build: .
+    container_name: lar-webscraping
+    depends_on: 
+      - db
+    volumes: 
+     -  .:/usr/lar-webscraping
+    networks: 
+      - lar-webscraping
+
+networks: 
+  lar-webscraping: 
+    driver: bridge

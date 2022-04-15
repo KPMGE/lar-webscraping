@@ -3,10 +3,12 @@
 ### How to set the service up
 In order to start all the services, you've got to run the following command: 
 
-`sudo docker-compose up`
+```bash
+sudo docker-compose up
+```
 
-After a couple minutes, the server is gonna be running at port 3333. Now, you must set up the 
-nginx server to work serve your json file through http.
+After a couple minutes, the nginx server is gonna be running at port 3333. Now, you must set up the 
+nginx server to serve your json file through http.
 
 First, install vim and bash inside nginx container: 
 

@@ -1,17 +1,31 @@
 import requests
+import time
 from bs4 import BeautifulSoup
 import json
+
+class CT:
+    def __init__(self, temperature, humidity, voltage):
+        self.temperature = temperature
+        self.humidity = humidity
+        self.voltage = voltage
+
+    def get_dictionary(self):
+        return {
+            "temperature": self.temperature,
+            "humidity": self.humidity,
+            "voltage": self.voltage
+        }
 
 class THT: 
     def __init__(self):
         json_tht_string = requests.get("https://lar.inf.ufes.br/tht/getTht").text
         self.json_tht_obj = json.loads(json_tht_string)
 
-    def get_tht_data(self, ct):
-        if ct != 'ct6' and ct != 'ct7' and ct != 'ct9':
+    def __get_tht_data(self, ct_name):
+        if ct_name != 'ct6' and ct_name!= 'ct7' and ct_name != 'ct9':
             exit("CT value must be 'ct6', 'ct7' or 'ct9'")
 
-        ct_html = self.json_tht_obj['result']['ct6']
+        ct_html = self.json_tht_obj['result'][ct_name]
         soup = BeautifulSoup(ct_html, 'lxml')
 
         tht_string = soup.find('html').text
@@ -22,19 +36,32 @@ class THT:
         voltage_with_sufix = tht_data_chunks[2]
         voltage_number = voltage_with_sufix.replace('TP_HU_TS', '')
 
-        return temperature, humidity, voltage_number
+        return float(temperature), float(humidity), float(voltage_number)
+
+    def get_ct(self, ct_name):
+        temp, hum, vol = self.__get_tht_data(ct_name)
+        ct = CT(temp, hum, vol)
+        return ct
+
+    def get_dictionary(self): 
+        ct6 = self.get_ct('ct6')
+        ct7 = self.get_ct('ct7')
+        ct9 = self.get_ct('ct9')
+        return {
+            "ct6": ct6.get_dictionary(),
+            "ct7": ct7.get_dictionary(),
+            "ct9": ct9.get_dictionary()
+        }
 
 
-tht_service = THT()
-temperature_ct6, humidity_ct6, voltage_ct6 = tht_service.get_tht_data('ct6')
-temperature_ct7, humidity_ct7, voltage_ct7 = tht_service.get_tht_data('ct7')
-temperature_ct9, humidity_ct9, voltage_ct9 = tht_service.get_tht_data('ct9')
+def save_lar_info():
+    tht_service = THT()
+    tht_dic = tht_service.get_dictionary()
+    with open('./lar-data/tht.json','w',encoding = 'utf-8') as f:
+        json.dump(tht_dic, f)
 
-print("CT6:")
-print(f"temperature: {temperature_ct6}, humidity: {humidity_ct6}, voltage: {voltage_ct6}\n")
-
-print("CT7:")
-print(f"temperature: {temperature_ct7}, humidity: {humidity_ct7}, voltage: {voltage_ct7}\n")
-
-print("CT9:")
-print(f"temperature: {temperature_ct9}, humidity: {humidity_ct9}, voltage: {voltage_ct9}\n")
+if __name__ == "__main__":
+    while True:
+        save_lar_info()
+        ten_minutes = 10 * 60
+        time.sleep(ten_minutes)

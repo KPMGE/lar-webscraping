@@ -10,6 +10,7 @@ services:
       - "3333:80"
     volumes: 
      -  ./lar-data:/usr/share/lar-data
+     -  ./conf:/etc/nginx/conf.d/
     networks: 
       - lar-webscraping
 

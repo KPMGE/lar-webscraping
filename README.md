@@ -36,6 +36,9 @@ server {
     listen  [::]:80;
     server_name  localhost;
 
+    # set up cors
+    add_header Access-Control-Allow-Origin *;
+
     location / {
         root   /usr/share/lar-data;
         index  tht.json;

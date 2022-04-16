@@ -49,7 +49,7 @@ server {
 }
 ```
 
-Furthermore, make sure you haven't messed up anything in the configuration file by running the command: 
+Furthermore, make sure you haven't messed up anything in it by running the command: 
 ```bash
 nginx -t
 ```
@@ -60,6 +60,6 @@ Finally, still inside the container, you can restart the nginx server, so that t
 nginx -s reload
 ```
 
-Well done! Now you're server is supposed to be setted up and running at port 3333. Check it out by running:
+Well done! Now your server is supposed to be setted up and running at port 3333. Check it out by running:
 
 > http://localhost:3333

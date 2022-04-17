@@ -1,3 +1,6 @@
 *.yaml
 *.md
+LICENSE 
 Dockerfile
+conf/
+lar-data/

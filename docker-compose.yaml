@@ -5,7 +5,7 @@ services:
     image: nginx:1.21.6-alpine
     container_name: nginx
     depends_on:
-      - tht
+      - lar
     ports:
       - "3333:80"
     volumes: 
@@ -16,7 +16,7 @@ services:
 
   tht:
     build: .
-    container_name: tht
+    container_name: lar
     volumes: 
      -  .:/usr/lar-webscraping
     networks: 

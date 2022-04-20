@@ -6,4 +6,4 @@ RUN pip install requests && pip install beautifulsoup4 && pip install lxml
 
 COPY . /usr/lar-webscraping/
 
-CMD [ "python", "script.py" ]
+CMD [ "python", "./script/main.py" ]
